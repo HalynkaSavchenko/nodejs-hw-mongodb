@@ -1,11 +1,26 @@
 import { ContactsCollection } from '../db/models/contact.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getAllContacts = async ({page, perPage, sortBy, sortOrder}) => {
+export const getAllContacts = async ({page, perPage, sortBy = 'name', sortOrder = 'asc', filter}) => {
     const skip = (page - 1) * perPage;
-    const items = await ContactsCollection.find().skip(skip).limit(perPage).sort({[sortBy] : sortOrder});
-    const totalItems = await ContactsCollection.countDocuments();
-    const {totalPages, hasNextPage, hasPrevPage} = calculatePaginationData({total: totalItems, page, perPage});
+
+    const dataBaseQuery = ContactsCollection.find();
+    if(filter.contactType) {
+        dataBaseQuery.where('contactType').equals(filter.contactType);
+    }
+    if(filter.isFavourite) {
+        dataBaseQuery.where('isFavourite').equals(filter.isFavourite);
+    }
+
+    const items = await dataBaseQuery.find().skip(skip).limit(perPage).sort({[sortBy] : sortOrder}).exec();
+
+    // з .merge(dataBaseQuery) не спрацьовує countDocuments()
+    // const totalItems = await ContactsCollection.find().merge(dataBaseQuery).countDocuments().exec();
+
+    const totalItems = await ContactsCollection.find(dataBaseQuery.getFilter()).countDocuments().exec();
+
+    const {totalPages, hasNextPage, hasPrevPage} = calculatePaginationData({totalItems, page, perPage});
+
     return {
         items,
         totalItems,
