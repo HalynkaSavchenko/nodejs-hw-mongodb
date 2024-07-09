@@ -1,8 +1,7 @@
 export const mongooseSaveError = (error, data, next) => {
-    if(error.name === 'ValidationError') {
-        error.status = 400;
-    }
-    next(error);
+    const {name, code} = error;
+    error.status = (name ==='MongoServerError' && code === 11000) ? 409 : 400;
+    next();
 };
 
 export const setUpdateSettings = function(next) {

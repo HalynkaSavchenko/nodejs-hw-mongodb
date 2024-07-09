@@ -5,6 +5,10 @@ export const getAllContacts = async ({page, perPage, sortBy = 'name', sortOrder 
     const skip = (page - 1) * perPage;
 
     const dataBaseQuery = ContactsCollection.find();
+
+    if(filter.userId) {
+        dataBaseQuery.where('userId').equals(filter.userId);
+    }
     if(filter.contactType) {
         dataBaseQuery.where('contactType').equals(filter.contactType);
     }
@@ -32,8 +36,8 @@ export const getAllContacts = async ({page, perPage, sortBy = 'name', sortOrder 
     };
 };
 
-export const getContactById = async(contactId) => {
-    const contact = await ContactsCollection.findById(contactId);
+export const getContactById = async(filter) => {
+    const contact = await ContactsCollection.findById(filter);
     return contact;
 };
 
