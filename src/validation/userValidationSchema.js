@@ -15,3 +15,7 @@ export const userSigninSchema = Joi.object({
     password: Joi.string().pattern(passwordRegex).required().messages({
         'string.pattern.base': passwordErrorMessage}),
 });
+
+export const requestResetEmailSchema = Joi.object({
+    email: Joi.string().pattern(emailRegex).required(),
+});
