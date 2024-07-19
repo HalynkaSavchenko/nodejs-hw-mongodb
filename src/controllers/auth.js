@@ -117,6 +117,12 @@ export const requestResetEmailController = async(req, res) => {
 
 export const resetPasswordController = async(req, res) => {
     await resetPassword(req.body);
+
+    const {sessionId} = req.cookies;
+    await deleteSession({_id: sessionId});
+    res.clearCookie('sessionId');
+    res.clearCookie('refreshToken');
+
     res.json({
         message: 'Password was successfully reset!',
         status: 200,
