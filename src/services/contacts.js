@@ -46,18 +46,19 @@ export const createContact = async(payload) => {
     return contact;
 };
 
-export const updateContact = async(contactId, payload, options = {}) => {
+export const updateContact = async(contactId, userId, payload, options = {}) => {
     const rawContact = await ContactsCollection.findOneAndUpdate(
-        {_id: contactId},
+        {_id: contactId, userId: userId},
         payload,
         {
         new: true,
         // runValidators: true,
         includeResultMetadata: true,
         ...options
-    },);
+        },
+    );
 
-    if (!rawContact || !rawContact.value) return null;
+    if (!rawContact) return null;
 
     return {
         contact: rawContact.value,
