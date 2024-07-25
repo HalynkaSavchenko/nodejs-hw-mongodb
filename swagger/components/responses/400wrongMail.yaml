@@ -1,0 +1,49 @@
+description: Bad Request - Invalid email format
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: BadRequestError
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Bad request
+            errors:
+              type: array
+              items:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '"email" with value "example@mail." fails to match the required pattern: /\\S+@\\S+\\.\\S+/'
+                  path:
+                    type: array
+                    items:
+                      type: string
+                      example: email
+                  type:
+                    type: string
+                    example: string.pattern.base
+                  context:
+                    type: object
+                    properties:
+                      regex:
+                        type: object
+                        example: {}
+                      value:
+                        type: string
+                        example: example@mail.
+                      label:
+                        type: string
+                        example: email
+                      key:
+                        type: string
+                        example: email

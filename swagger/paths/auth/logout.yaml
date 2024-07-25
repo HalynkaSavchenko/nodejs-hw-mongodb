@@ -1,0 +1,27 @@
+tags:
+  - Auth
+summary: Logout a user
+operationId: logoutUser
+description: Log out the user and clear the session cookies.
+responses:
+  '204':
+    description: Successfully logged out and cleared cookies
+  '401':
+    description: Unauthorized - Session not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: UnauthorizedError
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Session not found

@@ -1,0 +1,68 @@
+tags:
+  - Auth
+summary: Register a new user
+operationId: registerUser
+description: 'Register a new user'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: John Doe
+          email:
+            type: string
+            example: johndoe@example.com
+          password:
+            type: string
+            example: Strongpassword123!
+responses:
+  '201':
+    description: Successfully registered a user!
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            data:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: johndoe@example.com
+            message:
+              type: string
+              example: Successfully registered a user!
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '409':
+    description: Email in use
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 409
+            message:
+              type: string
+              example: Conflict error
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Email in use
+

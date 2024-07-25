@@ -1,0 +1,75 @@
+tags:
+  - Auth
+summary: Reset user password
+operationId: resetPassword
+description: Resets the user's password using a token.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          token:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+          password:
+            type: string
+            example: 'NewPassword123!'
+responses:
+  '200':
+    description: Password was successfully reset
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Password was successfully reset!
+            status:
+              type: integer
+              example: 200
+            data:
+              type: object
+              example: {}
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    description: Unauthorized - Invalid or expired token
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: UnauthorizedError
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Token is expired or invalid!
+  '404':
+    description: Not Found - User not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Not found
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: User not found
